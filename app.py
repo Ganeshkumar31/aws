@@ -727,4 +727,4 @@ def get_doctor_availability(doctor_email):
         return jsonify({'success': False, 'message': 'Database error'}), 500
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    app.run(host="0.0.0.0", port=443, ssl_context=("certs/cert.pem", "certs/key.pem"))
