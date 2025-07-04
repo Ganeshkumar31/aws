@@ -1,0 +1,222 @@
+{% extends "base.html" %}
+
+{% block title %}Register{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-primary text-white text-center py-4">
+                    <h2 class="fw-bold mb-0"><i class="fas fa-user-plus me-2"></i> Create Your Account</h2>
+                </div>
+                <div class="card-body p-5">
+                    <form method="POST" action="{{ url_for('register') }}" id="registrationForm">
+                        <div class="mb-4">
+                            <label class="form-label">I am a</label>
+                            <div class="d-flex gap-3">
+                                <div class="form-check flex-grow-1">
+                                    <input class="form-check-input" type="radio" name="role" id="patientRole" value="patient" checked>
+                                    <label class="form-check-label w-100 p-3 border rounded" for="patientRole">
+                                        <div class="d-flex align-items-center">
+                                            <i class="fas fa-user-injured fa-2x me-3 text-primary"></i>
+                                            <div>
+                                                <h5 class="mb-1">Patient</h5>
+                                                <small class="text-muted">Looking for healthcare services</small>
+                                            </div>
+                                        </div>
+                                    </label>
+                                </div>
+                                <div class="form-check flex-grow-1">
+                                    <input class="form-check-input" type="radio" name="role" id="doctorRole" value="doctor">
+                                    <label class="form-check-label w-100 p-3 border rounded" for="doctorRole">
+                                        <div class="d-flex align-items-center">
+                                            <i class="fas fa-user-md fa-2x me-3 text-primary"></i>
+                                            <div>
+                                                <h5 class="mb-1">Doctor</h5>
+                                                <small class="text-muted">Providing healthcare services</small>
+                                            </div>
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-4">
+                            <div class="col-md-6 mb-3 mb-md-0">
+                                <label for="name" class="form-label">Full Name</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-user"></i></span>
+                                    <input type="text" class="form-control" id="name" name="name" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="email" class="form-label">Email Address</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                                    <input type="email" class="form-control" id="email" name="email" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-4">
+                            <div class="col-md-6 mb-3 mb-md-0">
+                                <label for="password" class="form-label">Password</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                                    <input type="password" class="form-control" id="password" name="password" required>
+                                </div>
+                                <div class="form-text">Must be at least 8 characters</div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="confirm_password" class="form-label">Confirm Password</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                                    <input type="password" class="form-control" id="confirm_password" name="confirm_password" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-4">
+                            <div class="col-md-6 mb-3 mb-md-0">
+                                <label for="phone" class="form-label">Phone Number</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-phone"></i></span>
+                                    <input type="tel" class="form-control" id="phone" name="phone" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6" id="specializationField" style="display: none;">
+                                <label for="specialization" class="form-label">Specialization</label>
+                                <select class="form-select" id="specialization" name="specialization">
+                                    <option value="" selected disabled>Select specialization</option>
+                                    <option value="Cardiology">Cardiology</option>
+                                    <option value="Dermatology">Dermatology</option>
+                                    <option value="Endocrinology">Endocrinology</option>
+                                    <option value="Gastroenterology">Gastroenterology</option>
+                                    <option value="Neurology">Neurology</option>
+                                    <option value="Oncology">Oncology</option>
+                                    <option value="Ophthalmology">Ophthalmology</option>
+                                    <option value="Orthopedics">Orthopedics</option>
+                                    <option value="Pediatrics">Pediatrics</option>
+                                    <option value="Psychiatry">Psychiatry</option>
+                                    <option value="Pulmonology">Pulmonology</option>
+                                    <option value="Rheumatology">Rheumatology</option>
+                                    <option value="Urology">Urology</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6" id="ageField">
+                                <label for="age" class="form-label">Age</label>
+                                <input type="number" class="form-control" id="age" name="age" min="1" max="120">
+                            </div>
+                        </div>
+
+                        <div class="row mb-4">
+                            <div class="col-md-6 mb-3 mb-md-0" id="genderField">
+                                <label for="gender" class="form-label">Gender</label>
+                                <select class="form-select" id="gender" name="gender">
+                                    <option value="" selected disabled>Select gender</option>
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
+                                    <option value="Other">Other</option>
+                                    <option value="Prefer not to say">Prefer not to say</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6" id="bloodGroupField">
+                                <label for="blood_group" class="form-label">Blood Group</label>
+                                <select class="form-select" id="blood_group" name="blood_group">
+                                    <option value="" selected disabled>Select blood group</option>
+                                    <option value="A+">A+</option>
+                                    <option value="A-">A-</option>
+                                    <option value="B+">B+</option>
+                                    <option value="B-">B-</option>
+                                    <option value="AB+">AB+</option>
+                                    <option value="AB-">AB-</option>
+                                    <option value="O+">O+</option>
+                                    <option value="O-">O-</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="mb-4" id="addressField">
+                            <label for="address" class="form-label">Address</label>
+                            <textarea class="form-control" id="address" name="address" rows="2"></textarea>
+                        </div>
+
+                        <div class="mb-4" id="doctorFields" style="display: none;">
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="qualifications" class="form-label">Qualifications</label>
+                                    <input type="text" class="form-control" id="qualifications" name="qualifications" placeholder="MD, MBBS, etc.">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="experience" class="form-label">Experience (years)</label>
+                                    <input type="number" class="form-control" id="experience" name="experience" min="0" max="50">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-check mb-4">
+                            <input class="form-check-input" type="checkbox" id="terms" required>
+                            <label class="form-check-label" for="terms">
+                                I agree to the <a href="#" class="text-primary">Terms of Service</a> and <a href="#" class="text-primary">Privacy Policy</a>
+                            </label>
+                        </div>
+
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="fas fa-user-plus me-2"></i> Create Account
+                            </button>
+                        </div>
+
+                        <div class="text-center mt-3">
+                            <p>Already have an account? <a href="{{ url_for('login') }}" class="text-primary fw-bold">Login here</a></p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    $(document).ready(function() {
+        // Toggle fields based on role selection
+        $('input[name="role"]').change(function() {
+            if ($(this).val() === 'doctor') {
+                $('#specializationField').show();
+                $('#doctorFields').show();
+                $('#ageField').hide();
+                $('#genderField').hide();
+                $('#bloodGroupField').hide();
+                $('#addressField').hide();
+            } else {
+                $('#specializationField').hide();
+                $('#doctorFields').hide();
+                $('#ageField').show();
+                $('#genderField').show();
+                $('#bloodGroupField').show();
+                $('#addressField').show();
+            }
+        });
+
+        // Password match validation
+        $('#confirm_password').on('keyup', function() {
+            if ($('#password').val() !== $('#confirm_password').val()) {
+                $(this).addClass('is-invalid');
+            } else {
+                $(this).removeClass('is-invalid');
+            }
+        });
+
+        // Form validation
+        $('#registrationForm').submit(function(e) {
+            if ($('#password').val() !== $('#confirm_password').val()) {
+                e.preventDefault();
+                alert('Passwords do not match');
+            }
+        });
+    });
+</script>
+{% endblock %}

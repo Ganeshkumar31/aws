@@ -1,0 +1,480 @@
+{% extends "base.html" %}
+
+{% block title %}Doctor Dashboard{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <!-- Sidebar -->
+        <div class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+            <div class="position-sticky pt-3">
+                <div class="text-center mb-4">
+                    <div class="avatar avatar-xl bg-primary text-white rounded-circle mb-2">
+                        <i class="fas fa-user-md fa-2x"></i>
+                    </div>
+                    <h5 class="mb-1">{{ name }}</h5>
+                    <small class="text-muted">Doctor</small>
+                    <div class="mt-2">
+                        <span class="badge bg-info">{{ doctor.specialization }}</span>
+                    </div>
+                </div>
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="{{ url_for('dashboard') }}">
+                            <i class="fas fa-tachometer-alt me-2"></i> Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#appointments">
+                            <i class="fas fa-calendar-alt me-2"></i> Appointments
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#patients">
+                            <i class="fas fa-user-injured me-2"></i> Patients
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('profile') }}">
+                            <i class="fas fa-user me-2"></i> Profile
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#prescriptions">
+                            <i class="fas fa-prescription me-2"></i> Prescriptions
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#schedule">
+                            <i class="fas fa-clock me-2"></i> Schedule
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                <h1 class="h2">Doctor Dashboard</h1>
+                <div class="btn-toolbar mb-2 mb-md-0">
+                    <div class="btn-group me-2">
+                        <button type="button" class="btn btn-sm btn-outline-secondary">Today</button>
+                        <button type="button" class="btn btn-sm btn-outline-secondary">Week</button>
+                        <button type="button" class="btn btn-sm btn-outline-secondary">Month</button>
+                    </div>
+                    <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle">
+                        <i class="fas fa-filter me-1"></i> Filter
+                    </button>
+                </div>
+            </div>
+
+            <!-- Stats Cards -->
+            <div class="row mb-4">
+                <div class="col-md-3 mb-3">
+                    <div class="card bg-primary text-white h-100">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h6 class="text-uppercase">Today's Appointments</h6>
+                                    <h2 class="mb-0">5</h2>
+                                </div>
+                                <div class="icon-box bg-white bg-opacity-25 rounded-circle">
+                                    <i class="fas fa-calendar-day fa-2x"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <div class="card bg-success text-white h-100">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h6 class="text-uppercase">Total Patients</h6>
+                                    <h2 class="mb-0">142</h2>
+                                </div>
+                                <div class="icon-box bg-white bg-opacity-25 rounded-circle">
+                                    <i class="fas fa-user-injured fa-2x"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <div class="card bg-info text-white h-100">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h6 class="text-uppercase">Pending Consultations</h6>
+                                    <h2 class="mb-0">3</h2>
+                                </div>
+                                <div class="icon-box bg-white bg-opacity-25 rounded-circle">
+                                    <i class="fas fa-clock fa-2x"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <div class="card bg-warning text-white h-100">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h6 class="text-uppercase">Prescriptions</h6>
+                                    <h2 class="mb-0">28</h2>
+                                </div>
+                                <div class="icon-box bg-white bg-opacity-25 rounded-circle">
+                                    <i class="fas fa-prescription-bottle-alt fa-2x"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Today's Schedule -->
+            <div class="card mb-4">
+                <div class="card-header bg-white">
+                    <h5 class="mb-0">Today's Schedule</h5>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Time</th>
+                                    <th>Patient</th>
+                                    <th>Reason</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for appointment in appointments %}
+                                    {% if appointment.date == '2023-06-20' %}  <!-- Replace with current date -->
+                                        <tr>
+                                            <td>{{ appointment.time }}</td>
+                                            <td>
+                                                <div class="d-flex align-items-center">
+                                                    <div class="avatar avatar-sm bg-primary text-white rounded-circle me-2">
+                                                        <i class="fas fa-user-injured"></i>
+                                                    </div>
+                                                    <div>
+                                                        <h6 class="mb-0">{{ appointment.patient_name }}</h6>
+                                                        <small class="text-muted">{{ appointment.patient_email }}</small>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>{{ appointment.symptoms|truncate(30) }}</td>
+                                            <td>
+                                                <span class="badge bg-{{ 'success' if appointment.status == 'completed' else 'warning' if appointment.status == 'confirmed' else 'info' }}">
+                                                    {{ appointment.status|capitalize }}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <button class="btn btn-sm btn-outline-primary view-appointment" data-id="{{ appointment.appointment_id }}">
+                                                    <i class="fas fa-eye"></i> View
+                                                </button>
+                                                {% if appointment.status != 'completed' %}
+                                                    <button class="btn btn-sm btn-outline-success complete-appointment" data-id="{{ appointment.appointment_id }}">
+                                                        <i class="fas fa-check"></i> Complete
+                                                    </button>
+                                                {% endif %}
+                                            </td>
+                                        </tr>
+                                    {% endif %}
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Upcoming Appointments -->
+            <div class="card mb-4" id="appointments">
+                <div class="card-header bg-white">
+                    <h5 class="mb-0">Upcoming Appointments</h5>
+                </div>
+                <div class="card-body">
+                    {% if appointments %}
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Date & Time</th>
+                                        <th>Patient</th>
+                                        <th>Symptoms</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for appointment in appointments %}
+                                        {% if appointment.status in ['scheduled', 'confirmed'] %}
+                                            <tr>
+                                                <td>
+                                                    {{ appointment.date }}<br>
+                                                    <small class="text-muted">{{ appointment.time }}</small>
+                                                </td>
+                                                <td>
+                                                    <div class="d-flex align-items-center">
+                                                        <div class="avatar avatar-sm bg-primary text-white rounded-circle me-2">
+                                                            <i class="fas fa-user-injured"></i>
+                                                        </div>
+                                                        <div>
+                                                            <h6 class="mb-0">{{ appointment.patient_name }}</h6>
+                                                            <small class="text-muted">{{ appointment.patient_email }}</small>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>{{ appointment.symptoms|truncate(30) }}</td>
+                                                <td>
+                                                    <span class="badge bg-{{ 'success' if appointment.status == 'confirmed' else 'warning' }}">
+                                                        {{ appointment.status|capitalize }}
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    <button class="btn btn-sm btn-outline-primary view-appointment" data-id="{{ appointment.appointment_id }}">
+                                                        <i class="fas fa-eye"></i> View
+                                                    </button>
+                                                    <button class="btn btn-sm btn-outline-success confirm-appointment" data-id="{{ appointment.appointment_id }}">
+                                                        <i class="fas fa-check"></i> Confirm
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        {% endif %}
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <div class="text-center py-5">
+                            <i class="fas fa-calendar-times fa-3x text-muted mb-3"></i>
+                            <h5>No Upcoming Appointments</h5>
+                            <p class="text-muted">You don't have any scheduled appointments yet.</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Recent Patients -->
+            <div class="card mb-4" id="patients">
+                <div class="card-header bg-white">
+                    <h5 class="mb-0">Recent Patients</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        {% for appointment in appointments|sort(attribute='date', reverse=True)|unique(attribute='patient_email')|slice(4) %}
+                            <div class="col-md-6 col-lg-3 mb-4">
+                                <div class="card h-100 border-0 shadow-sm">
+                                    <div class="card-body text-center">
+                                        <div class="avatar avatar-xl bg-primary text-white rounded-circle mb-3 mx-auto">
+                                            <i class="fas fa-user-injured fa-2x"></i>
+                                        </div>
+                                        <h5 class="mb-1">{{ appointment.patient_name }}</h5>
+                                        <p class="text-muted mb-2">{{ appointment.patient_email }}</p>
+                                        <div class="d-flex justify-content-center">
+                                            <span class="badge bg-light text-dark me-2">
+                                                <i class="fas fa-calendar-alt me-1"></i> 3 visits
+                                            </span>
+                                            <span class="badge bg-light text-dark">
+                                                <i class="fas fa-prescription me-1"></i> 2 Rx
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer bg-white border-0">
+                                        <button class="btn btn-sm btn-outline-primary w-100">
+                                            <i class="fas fa-user-circle me-1"></i> View Profile
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    $(document).ready(function() {
+        // View appointment details
+        $('.view-appointment').click(function() {
+            const appointmentId = $(this).data('id');
+            
+            // Fetch appointment details via AJAX
+            $.ajax({
+                url: `/appointments/${appointmentId}`,
+                method: 'GET',
+                success: function(response) {
+                    if (response.success) {
+                        const appointment = response.appointment;
+                        
+                        // Build modal content
+                        let content = `
+                            <div class="row mb-4">
+                                <div class="col-md-6">
+                                    <h6 class="text-muted">Patient</h6>
+                                    <p>${appointment.patient_name}</p>
+                                </div>
+                                <div class="col-md-6">
+                                    <h6 class="text-muted">Date</h6>
+                                    <p>${appointment.date} at ${appointment.time}</p>
+                                </div>
+                            </div>
+                            <div class="mb-4">
+                                <h6 class="text-muted">Symptoms</h6>
+                                <p>${appointment.symptoms || 'Not specified'}</p>
+                            </div>
+                        `;
+                        
+                        if (appointment.diagnosis) {
+                            content += `
+                                <div class="mb-4">
+                                    <h6 class="text-muted">Diagnosis</h6>
+                                    <p>${appointment.diagnosis}</p>
+                                </div>
+                            `;
+                        }
+                        
+                        if (appointment.treatment_plan) {
+                            content += `
+                                <div class="mb-4">
+                                    <h6 class="text-muted">Treatment Plan</h6>
+                                    <p>${appointment.treatment_plan}</p>
+                                </div>
+                            `;
+                        }
+                        
+                        if (appointment.prescription) {
+                            content += `
+                                <div class="mb-4">
+                                    <h6 class="text-muted">Prescription</h6>
+                                    <p>${appointment.prescription}</p>
+                                </div>
+                            `;
+                        }
+                        
+                        // Add form for diagnosis if not completed
+                        if (appointment.status !== 'completed') {
+                            content += `
+                                <hr>
+                                <h5 class="mb-3">Complete Appointment</h5>
+                                <form id="completeAppointmentForm">
+                                    <input type="hidden" name="appointment_id" value="${appointmentId}">
+                                    <div class="mb-3">
+                                        <label for="diagnosis" class="form-label">Diagnosis</label>
+                                        <textarea class="form-control" id="diagnosis" name="diagnosis" rows="3" required>${appointment.diagnosis || ''}</textarea>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="treatment_plan" class="form-label">Treatment Plan</label>
+                                        <textarea class="form-control" id="treatment_plan" name="treatment_plan" rows="3">${appointment.treatment_plan || ''}</textarea>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="prescription" class="form-label">Prescription</label>
+                                        <textarea class="form-control" id="prescription" name="prescription" rows="3">${appointment.prescription || ''}</textarea>
+                                    </div>
+                                    <div class="d-grid">
+                                        <button type="submit" class="btn btn-primary">
+                                            <i class="fas fa-check-circle me-1"></i> Complete Appointment
+                                        </button>
+                                    </div>
+                                </form>
+                            `;
+                        }
+                        
+                        $('#appointmentDetails').html(content);
+                        $('#viewAppointmentModal').modal('show');
+                        
+                        // Handle form submission for completing appointment
+                        if (appointment.status !== 'completed') {
+                            $('#completeAppointmentForm').submit(function(e) {
+                                e.preventDefault();
+                                
+                                const formData = {
+                                    diagnosis: $('#diagnosis').val(),
+                                    treatment_plan: $('#treatment_plan').val(),
+                                    prescription: $('#prescription').val(),
+                                    status: 'completed'
+                                };
+                                
+                                $.ajax({
+                                    url: `/appointments/${appointmentId}`,
+                                    method: 'PUT',
+                                    contentType: 'application/json',
+                                    data: JSON.stringify(formData),
+                                    success: function(response) {
+                                        if (response.success) {
+                                            alert('Appointment completed successfully');
+                                            $('#viewAppointmentModal').modal('hide');
+                                            location.reload();
+                                        } else {
+                                            alert(response.message);
+                                        }
+                                    },
+                                    error: function() {
+                                        alert('Failed to complete appointment');
+                                    }
+                                });
+                            });
+                        }
+                    }
+                },
+                error: function() {
+                    alert('Failed to fetch appointment details');
+                }
+            });
+        });
+        
+        // Confirm appointment
+        $('.confirm-appointment').click(function() {
+            const appointmentId = $(this).data('id');
+            
+            $.ajax({
+                url: `/appointments/${appointmentId}`,
+                method: 'PUT',
+                contentType: 'application/json',
+                data: JSON.stringify({ status: 'confirmed' }),
+                success: function(response) {
+                    if (response.success) {
+                        alert('Appointment confirmed successfully');
+                        location.reload();
+                    } else {
+                        alert(response.message);
+                    }
+                },
+                error: function() {
+                    alert('Failed to confirm appointment');
+                }
+            });
+        });
+        
+        // Complete appointment
+        $('.complete-appointment').click(function() {
+            const appointmentId = $(this).data('id');
+            
+            $.ajax({
+                url: `/appointments/${appointmentId}`,
+                method: 'PUT',
+                contentType: 'application/json',
+                data: JSON.stringify({ status: 'completed' }),
+                success: function(response) {
+                    if (response.success) {
+                        alert('Appointment marked as completed');
+                        location.reload();
+                    } else {
+                        alert(response.message);
+                    }
+                },
+                error: function() {
+                    alert('Failed to complete appointment');
+                }
+            });
+        });
+    });
+</script>
+{% endblock %}

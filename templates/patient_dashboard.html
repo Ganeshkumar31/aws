@@ -1,0 +1,550 @@
+{% extends "base.html" %}
+
+{% block title %}Patient Dashboard{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <!-- Sidebar -->
+        <div class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+            <div class="position-sticky pt-3">
+                <div class="text-center mb-4">
+                    <div class="avatar avatar-xl bg-primary text-white rounded-circle mb-2">
+                        <i class="fas fa-user-injured fa-2x"></i>
+                    </div>
+                    <h5 class="mb-1">{{ name }}</h5>
+                    <small class="text-muted">Patient</small>
+                </div>
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="{{ url_for('dashboard') }}">
+                            <i class="fas fa-tachometer-alt me-2"></i> Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#bookAppointmentModal">
+                            <i class="fas fa-calendar-plus me-2"></i> Book Appointment
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('profile') }}">
+                            <i class="fas fa-user me-2"></i> Profile
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#prescriptions">
+                            <i class="fas fa-prescription me-2"></i> Prescriptions
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#medical-history">
+                            <i class="fas fa-file-medical me-2"></i> Medical History
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                <h1 class="h2">Patient Dashboard</h1>
+                <div class="btn-toolbar mb-2 mb-md-0">
+                    <div class="btn-group me-2">
+                        <button type="button" class="btn btn-sm btn-outline-secondary">Share</button>
+                        <button type="button" class="btn btn-sm btn-outline-secondary">Export</button>
+                    </div>
+                    <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle">
+                        <i class="fas fa-calendar me-1"></i> This week
+                    </button>
+                </div>
+            </div>
+
+            <!-- Stats Cards -->
+            <div class="row mb-4">
+                <div class="col-md-4 mb-3">
+                    <div class="card bg-primary text-white h-100">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h6 class="text-uppercase">Upcoming Appointments</h6>
+                                    <h2 class="mb-0">3</h2>
+                                </div>
+                                <div class="icon-box bg-white bg-opacity-25 rounded-circle">
+                                    <i class="fas fa-calendar-check fa-2x"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <div class="card bg-success text-white h-100">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h6 class="text-uppercase">Completed Visits</h6>
+                                    <h2 class="mb-0">12</h2>
+                                </div>
+                                <div class="icon-box bg-white bg-opacity-25 rounded-circle">
+                                    <i class="fas fa-check-circle fa-2x"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <div class="card bg-info text-white h-100">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h6 class="text-uppercase">Active Prescriptions</h6>
+                                    <h2 class="mb-0">5</h2>
+                                </div>
+                                <div class="icon-box bg-white bg-opacity-25 rounded-circle">
+                                    <i class="fas fa-prescription-bottle-alt fa-2x"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Upcoming Appointments -->
+            <div class="card mb-4">
+                <div class="card-header bg-white">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">Upcoming Appointments</h5>
+                        <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#bookAppointmentModal">
+                            <i class="fas fa-plus me-1"></i> New Appointment
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    {% if appointments %}
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Doctor</th>
+                                        <th>Specialization</th>
+                                        <th>Date & Time</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for appointment in appointments %}
+                                        {% if appointment.status in ['scheduled', 'confirmed'] %}
+                                            <tr>
+                                                <td>
+                                                    <div class="d-flex align-items-center">
+                                                        <div class="avatar avatar-sm bg-primary text-white rounded-circle me-2">
+                                                            <i class="fas fa-user-md"></i>
+                                                        </div>
+                                                        <div>
+                                                            <h6 class="mb-0">{{ appointment.doctor_name }}</h6>
+                                                            <small class="text-muted">{{ appointment.doctor_email }}</small>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>Cardiology</td>
+                                                <td>
+                                                    {{ appointment.date }}<br>
+                                                    <small class="text-muted">{{ appointment.time }}</small>
+                                                </td>
+                                                <td>
+                                                    <span class="badge bg-{{ 'success' if appointment.status == 'confirmed' else 'warning' }}">
+                                                        {{ appointment.status|capitalize }}
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    <button class="btn btn-sm btn-outline-primary view-appointment" data-id="{{ appointment.appointment_id }}">
+                                                        <i class="fas fa-eye"></i> View
+                                                    </button>
+                                                    <button class="btn btn-sm btn-outline-danger cancel-appointment" data-id="{{ appointment.appointment_id }}">
+                                                        <i class="fas fa-times"></i> Cancel
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        {% endif %}
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <div class="text-center py-5">
+                            <i class="fas fa-calendar-times fa-3x text-muted mb-3"></i>
+                            <h5>No Upcoming Appointments</h5>
+                            <p class="text-muted">You don't have any scheduled appointments yet.</p>
+                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#bookAppointmentModal">
+                                <i class="fas fa-plus me-1"></i> Book an Appointment
+                            </button>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Recent Appointments -->
+            <div class="card mb-4">
+                <div class="card-header bg-white">
+                    <h5 class="mb-0">Recent Appointments</h5>
+                </div>
+                <div class="card-body">
+                    {% if appointments %}
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Doctor</th>
+                                        <th>Date</th>
+                                        <th>Diagnosis</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for appointment in appointments %}
+                                        {% if appointment.status in ['completed', 'cancelled'] %}
+                                            <tr>
+                                                <td>
+                                                    <div class="d-flex align-items-center">
+                                                        <div class="avatar avatar-sm bg-primary text-white rounded-circle me-2">
+                                                            <i class="fas fa-user-md"></i>
+                                                        </div>
+                                                        <div>
+                                                            <h6 class="mb-0">{{ appointment.doctor_name }}</h6>
+                                                            <small class="text-muted">{{ appointment.doctor_email }}</small>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    {{ appointment.date }}<br>
+                                                    <small class="text-muted">{{ appointment.time }}</small>
+                                                </td>
+                                                <td>
+                                                    {% if appointment.diagnosis %}
+                                                        {{ appointment.diagnosis|truncate(50) }}
+                                                    {% else %}
+                                                        <span class="text-muted">No diagnosis yet</span>
+                                                    {% endif %}
+                                                </td>
+                                                <td>
+                                                    <span class="badge bg-{{ 'secondary' if appointment.status == 'cancelled' else 'success' }}">
+                                                        {{ appointment.status|capitalize }}
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    <button class="btn btn-sm btn-outline-primary view-appointment" data-id="{{ appointment.appointment_id }}">
+                                                        <i class="fas fa-eye"></i> View
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        {% endif %}
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <div class="text-center py-5">
+                            <i class="fas fa-calendar-times fa-3x text-muted mb-3"></i>
+                            <h5>No Recent Appointments</h5>
+                            <p class="text-muted">You don't have any appointment history yet.</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Prescriptions Section -->
+            <div class="card mb-4" id="prescriptions">
+                <div class="card-header bg-white">
+                    <h5 class="mb-0">Your Prescriptions</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6 col-lg-4 mb-4">
+                            <div class="card h-100 border-primary">
+                                <div class="card-header bg-primary text-white">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <h6 class="mb-0">Prescription #PR-001</h6>
+                                        <span class="badge bg-light text-primary">Active</span>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="mb-3">
+                                        <h6 class="text-muted">Doctor</h6>
+                                        <p>Dr. Sarah Johnson</p>
+                                    </div>
+                                    <div class="mb-3">
+                                        <h6 class="text-muted">Date</h6>
+                                        <p>June 15, 2023</p>
+                                    </div>
+                                    <div class="mb-3">
+                                        <h6 class="text-muted">Medications</h6>
+                                        <ul class="list-unstyled">
+                                            <li><i class="fas fa-pills me-2 text-primary"></i> Ibuprofen - 200mg - 3 times daily</li>
+                                            <li><i class="fas fa-pills me-2 text-primary"></i> Amoxicillin - 500mg - 2 times daily</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="card-footer bg-white">
+                                    <button class="btn btn-sm btn-outline-primary w-100">
+                                        <i class="fas fa-download me-1"></i> Download
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-4 mb-4">
+                            <div class="card h-100 border-secondary">
+                                <div class="card-header bg-secondary text-white">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <h6 class="mb-0">Prescription #PR-002</h6>
+                                        <span class="badge bg-light text-secondary">Completed</span>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="mb-3">
+                                        <h6 class="text-muted">Doctor</h6>
+                                        <p>Dr. Michael Chen</p>
+                                    </div>
+                                    <div class="mb-3">
+                                        <h6 class="text-muted">Date</h6>
+                                        <p>May 28, 2023</p>
+                                    </div>
+                                    <div class="mb-3">
+                                        <h6 class="text-muted">Medications</h6>
+                                        <ul class="list-unstyled">
+                                            <li><i class="fas fa-pills me-2 text-primary"></i> Lisinopril - 10mg - Once daily</li>
+                                            <li><i class="fas fa-pills me-2 text-primary"></i> Metformin - 500mg - 2 times daily</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="card-footer bg-white">
+                                    <button class="btn btn-sm btn-outline-secondary w-100">
+                                        <i class="fas fa-download me-1"></i> Download
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-4 mb-4">
+                            <div class="card h-100 border-success">
+                                <div class="card-header bg-success text-white">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <h6 class="mb-0">Prescription #PR-003</h6>
+                                        <span class="badge bg-light text-success">Active</span>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="mb-3">
+                                        <h6 class="text-muted">Doctor</h6>
+                                        <p>Dr. Emily Wilson</p>
+                                    </div>
+                                    <div class="mb-3">
+                                        <h6 class="text-muted">Date</h6>
+                                        <p>June 5, 2023</p>
+                                    </div>
+                                    <div class="mb-3">
+                                        <h6 class="text-muted">Medications</h6>
+                                        <ul class="list-unstyled">
+                                            <li><i class="fas fa-pills me-2 text-primary"></i> Atorvastatin - 20mg - Once daily</li>
+                                            <li><i class="fas fa-pills me-2 text-primary"></i> Albuterol - As needed</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="card-footer bg-white">
+                                    <button class="btn btn-sm btn-outline-success w-100">
+                                        <i class="fas fa-download me-1"></i> Download
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    $(document).ready(function() {
+        // View appointment details
+        $('.view-appointment').click(function() {
+            const appointmentId = $(this).data('id');
+            
+            // Fetch appointment details via AJAX
+            $.ajax({
+                url: `/appointments/${appointmentId}`,
+                method: 'GET',
+                success: function(response) {
+                    if (response.success) {
+                        const appointment = response.appointment;
+                        
+                        // Build modal content
+                        let content = `
+                            <div class="row mb-4">
+                                <div class="col-md-6">
+                                    <h6 class="text-muted">Doctor</h6>
+                                    <p>${appointment.doctor_name}</p>
+                                </div>
+                                <div class="col-md-6">
+                                    <h6 class="text-muted">Patient</h6>
+                                    <p>${appointment.patient_name}</p>
+                                </div>
+                            </div>
+                            <div class="row mb-4">
+                                <div class="col-md-6">
+                                    <h6 class="text-muted">Date</h6>
+                                    <p>${appointment.date}</p>
+                                </div>
+                                <div class="col-md-6">
+                                    <h6 class="text-muted">Time</h6>
+                                    <p>${appointment.time}</p>
+                                </div>
+                            </div>
+                            <div class="mb-4">
+                                <h6 class="text-muted">Symptoms</h6>
+                                <p>${appointment.symptoms || 'Not specified'}</p>
+                            </div>
+                        `;
+                        
+                        if (appointment.diagnosis) {
+                            content += `
+                                <div class="mb-4">
+                                    <h6 class="text-muted">Diagnosis</h6>
+                                    <p>${appointment.diagnosis}</p>
+                                </div>
+                            `;
+                        }
+                        
+                        if (appointment.treatment_plan) {
+                            content += `
+                                <div class="mb-4">
+                                    <h6 class="text-muted">Treatment Plan</h6>
+                                    <p>${appointment.treatment_plan}</p>
+                                </div>
+                            `;
+                        }
+                        
+                        if (appointment.prescription) {
+                            content += `
+                                <div class="mb-4">
+                                    <h6 class="text-muted">Prescription</h6>
+                                    <p>${appointment.prescription}</p>
+                                </div>
+                            `;
+                        }
+                        
+                        $('#appointmentDetails').html(content);
+                        $('#viewAppointmentModal').modal('show');
+                    }
+                },
+                error: function() {
+                    alert('Failed to fetch appointment details');
+                }
+            });
+        });
+        
+        // Cancel appointment
+        $('.cancel-appointment').click(function() {
+            if (confirm('Are you sure you want to cancel this appointment?')) {
+                const appointmentId = $(this).data('id');
+                
+                $.ajax({
+                    url: `/appointments/${appointmentId}`,
+                    method: 'DELETE',
+                    success: function(response) {
+                        if (response.success) {
+                            alert('Appointment cancelled successfully');
+                            location.reload();
+                        } else {
+                            alert(response.message);
+                        }
+                    },
+                    error: function() {
+                        alert('Failed to cancel appointment');
+                    }
+                });
+            }
+        });
+        
+        // Book new appointment
+        $('#appointmentForm').submit(function(e) {
+            e.preventDefault();
+            
+            const doctorEmail = $('#doctorSelect').val();
+            const date = $('#appointmentDate').val();
+            const time = $('#appointmentTime').val();
+            const symptoms = $('#symptoms').val();
+            
+            $.ajax({
+                url: '/book_appointment',
+                method: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    doctor_email: doctorEmail,
+                    date: date,
+                    time: time,
+                    symptoms: symptoms
+                }),
+                success: function(response) {
+                    if (response.success) {
+                        alert('Appointment booked successfully!');
+                        $('#bookAppointmentModal').modal('hide');
+                        location.reload();
+                    } else {
+                        alert(response.message);
+                    }
+                },
+                error: function() {
+                    alert('Failed to book appointment');
+                }
+            });
+        });
+        
+        // Load doctors for booking
+        $.ajax({
+            url: '/doctors',
+            method: 'GET',
+            success: function(response) {
+                if (response.success) {
+                    const doctors = response.doctors;
+                    const doctorSelect = $('#doctorSelect');
+                    const specializationFilter = $('#specializationFilter');
+                    const specializations = new Set();
+                    
+                    // Populate doctor dropdown and collect specializations
+                    doctors.forEach(doctor => {
+                        doctorSelect.append(`<option value="${doctor.email}">Dr. ${doctor.name} - ${doctor.specialization}</option>`);
+                        if (doctor.specialization) {
+                            specializations.add(doctor.specialization);
+                        }
+                    });
+                    
+                    // Populate specialization filter
+                    specializations.forEach(spec => {
+                        specializationFilter.append(`<option value="${spec}">${spec}</option>`);
+                    });
+                }
+            },
+            error: function() {
+                console.log('Failed to load doctors');
+            }
+        });
+        
+        // Filter doctors by specialization
+        $('#specializationFilter').change(function() {
+            const specialization = $(this).val();
+            $('#doctorSelect option').each(function() {
+                const optionText = $(this).text();
+                if (!specialization || optionText.includes(specialization)) {
+                    $(this).show();
+                } else {
+                    $(this).hide();
+                }
+            });
+            $('#doctorSelect').val('');
+        });
+    });
+</script>
+{% endblock %}

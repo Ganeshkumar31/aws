@@ -1,0 +1,431 @@
+{% extends "base.html" %}
+
+{% block title %}Healthcare Appointment System{% endblock %}
+
+{% block head %}
+<!-- Animate.css -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+<!-- AOS (Animate On Scroll) -->
+<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section with Parallax Effect -->
+<section class="hero-section position-relative overflow-hidden text-white" style="background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://images.unsplash.com/photo-1579684385127-1ef15d508118?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') no-repeat center center/cover; height: 100vh; min-height: 600px;">
+    <div class="container h-100">
+        <div class="row h-100 align-items-center">
+            <div class="col-lg-7">
+                <h1 class="display-3 fw-bold mb-4 animate__animated animate__fadeInDown">Your Health, <span class="text-primary">Our Priority</span></h1>
+                <p class="lead mb-5 animate__animated animate__fadeIn animate__delay-1s">Book appointments with top healthcare professionals from the comfort of your home. Our platform connects you with the best doctors in your area.</p>
+                <div class="d-flex gap-3 animate__animated animate__fadeInUp animate__delay-1s">
+                    {% if not session.get('email') %}
+                        <a href="{{ url_for('register') }}" class="btn btn-primary btn-lg px-4 py-3 rounded-pill">
+                            <i class="fas fa-user-plus me-2"></i> Register Now
+                        </a>
+                        <a href="{{ url_for('login') }}" class="btn btn-outline-light btn-lg px-4 py-3 rounded-pill">
+                            <i class="fas fa-sign-in-alt me-2"></i> Login
+                        </a>
+                    {% else %}
+                        <a href="{{ url_for('dashboard') }}" class="btn btn-primary btn-lg px-4 py-3 rounded-pill">
+                            <i class="fas fa-tachometer-alt me-2"></i> Go to Dashboard
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="hero-scroll-down">
+        <a href="#features" class="text-white">
+            <i class="fas fa-chevron-down animate__animated animate__bounce animate__infinite"></i>
+        </a>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section id="features" class="py-5 bg-light" data-aos="fade-up">
+    <div class="container py-5">
+        <div class="row justify-content-center mb-5">
+            <div class="col-lg-8 text-center">
+                <h2 class="display-5 fw-bold mb-3">Why Choose Our Healthcare System?</h2>
+                <p class="lead text-muted">We provide a seamless experience for both patients and healthcare providers</p>
+            </div>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="100">
+                <div class="card h-100 border-0 shadow-sm hover-effect">
+                    <div class="card-body text-center p-4">
+                        <div class="icon-box bg-primary bg-opacity-10 text-primary rounded-circle mx-auto mb-4">
+                            <i class="fas fa-user-md fa-2x"></i>
+                        </div>
+                        <h4 class="card-title">Expert Doctors</h4>
+                        <p class="card-text">Connect with highly qualified and experienced healthcare professionals across various specialties.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="200">
+                <div class="card h-100 border-0 shadow-sm hover-effect">
+                    <div class="card-body text-center p-4">
+                        <div class="icon-box bg-primary bg-opacity-10 text-primary rounded-circle mx-auto mb-4">
+                            <i class="fas fa-calendar-check fa-2x"></i>
+                        </div>
+                        <h4 class="card-title">Easy Scheduling</h4>
+                        <p class="card-text">Book appointments 24/7 with our easy-to-use online scheduling system.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="300">
+                <div class="card h-100 border-0 shadow-sm hover-effect">
+                    <div class="card-body text-center p-4">
+                        <div class="icon-box bg-primary bg-opacity-10 text-primary rounded-circle mx-auto mb-4">
+                            <i class="fas fa-shield-alt fa-2x"></i>
+                        </div>
+                        <h4 class="card-title">Secure & Private</h4>
+                        <p class="card-text">Your health information is protected with industry-standard security measures.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="400">
+                <div class="card h-100 border-0 shadow-sm hover-effect">
+                    <div class="card-body text-center p-4">
+                        <div class="icon-box bg-primary bg-opacity-10 text-primary rounded-circle mx-auto mb-4">
+                            <i class="fas fa-comments fa-2x"></i>
+                        </div>
+                        <h4 class="card-title">Instant Support</h4>
+                        <p class="card-text">24/7 customer support to help you with any questions or issues.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Virtual Consultation Section -->
+<section class="py-5" data-aos="fade-up">
+    <div class="container py-5">
+        <div class="row align-items-center">
+            <div class="col-lg-6 mb-4 mb-lg-0">
+                <img src="https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Virtual consultation" class="img-fluid rounded shadow-lg" data-aos="zoom-in">
+            </div>
+            <div class="col-lg-6">
+                <h2 class="display-5 fw-bold mb-4">Virtual Consultations Available</h2>
+                <p class="lead mb-4">Can't visit in person? Many of our doctors offer virtual consultations via secure video calls.</p>
+                <ul class="list-unstyled">
+                    <li class="mb-3"><i class="fas fa-check-circle text-primary me-2"></i> No travel time or waiting rooms</li>
+                    <li class="mb-3"><i class="fas fa-check-circle text-primary me-2"></i> Consult from the comfort of your home</li>
+                    <li class="mb-3"><i class="fas fa-check-circle text-primary me-2"></i> Prescriptions sent directly to your pharmacy</li>
+                    <li class="mb-3"><i class="fas fa-check-circle text-primary me-2"></i> Secure and HIPAA-compliant platform</li>
+                </ul>
+                {% if not session.get('email') %}
+                    <a href="{{ url_for('register') }}" class="btn btn-primary btn-lg mt-3 px-4 py-3 rounded-pill">
+                        <i class="fas fa-user-plus me-2"></i> Get Started
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Specialties Section -->
+<section class="py-5 bg-light" data-aos="fade-up">
+    <div class="container py-5">
+        <div class="row justify-content-center mb-5">
+            <div class="col-lg-8 text-center">
+                <h2 class="display-5 fw-bold mb-3">Our Specialties</h2>
+                <p class="lead text-muted">Find the right specialist for your healthcare needs</p>
+            </div>
+        </div>
+        <div class="row g-4">
+            <div class="col-6 col-md-4 col-lg-2">
+                <div class="card h-100 border-0 text-center p-3 specialty-card hover-effect">
+                    <div class="icon-box bg-primary bg-opacity-10 text-primary rounded-circle mx-auto mb-3">
+                        <i class="fas fa-heartbeat fa-2x"></i>
+                    </div>
+                    <h6 class="mb-0">Cardiology</h6>
+                </div>
+            </div>
+            <div class="col-6 col-md-4 col-lg-2">
+                <div class="card h-100 border-0 text-center p-3 specialty-card hover-effect">
+                    <div class="icon-box bg-primary bg-opacity-10 text-primary rounded-circle mx-auto mb-3">
+                        <i class="fas fa-brain fa-2x"></i>
+                    </div>
+                    <h6 class="mb-0">Neurology</h6>
+                </div>
+            </div>
+            <div class="col-6 col-md-4 col-lg-2">
+                <div class="card h-100 border-0 text-center p-3 specialty-card hover-effect">
+                    <div class="icon-box bg-primary bg-opacity-10 text-primary rounded-circle mx-auto mb-3">
+                        <i class="fas fa-bone fa-2x"></i>
+                    </div>
+                    <h6 class="mb-0">Orthopedics</h6>
+                </div>
+            </div>
+            <div class="col-6 col-md-4 col-lg-2">
+                <div class="card h-100 border-0 text-center p-3 specialty-card hover-effect">
+                    <div class="icon-box bg-primary bg-opacity-10 text-primary rounded-circle mx-auto mb-3">
+                        <i class="fas fa-lungs fa-2x"></i>
+                    </div>
+                    <h6 class="mb-0">Pulmonology</h6>
+                </div>
+            </div>
+            <div class="col-6 col-md-4 col-lg-2">
+                <div class="card h-100 border-0 text-center p-3 specialty-card hover-effect">
+                    <div class="icon-box bg-primary bg-opacity-10 text-primary rounded-circle mx-auto mb-3">
+                        <i class="fas fa-child fa-2x"></i>
+                    </div>
+                    <h6 class="mb-0">Pediatrics</h6>
+                </div>
+            </div>
+            <div class="col-6 col-md-4 col-lg-2">
+                <div class="card h-100 border-0 text-center p-3 specialty-card hover-effect">
+                    <div class="icon-box bg-primary bg-opacity-10 text-primary rounded-circle mx-auto mb-3">
+                        <i class="fas fa-eye fa-2x"></i>
+                    </div>
+                    <h6 class="mb-0">Ophthalmology</h6>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Testimonials Section -->
+<section class="py-5" data-aos="fade-up">
+    <div class="container py-5">
+        <div class="row justify-content-center mb-5">
+            <div class="col-lg-8 text-center">
+                <h2 class="display-5 fw-bold mb-3">What Our Patients Say</h2>
+                <p class="lead text-muted">Hear from people who have used our services</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-4 mb-4" data-aos="fade-up" data-aos-delay="100">
+                <div class="card h-100 border-0 shadow-sm hover-effect">
+                    <div class="card-body p-4">
+                        <div class="d-flex align-items-center mb-4">
+                            <img src="https://randomuser.me/api/portraits/women/43.jpg" alt="Patient" class="rounded-circle me-3" width="60">
+                            <div>
+                                <h5 class="mb-0">Sarah Johnson</h5>
+                                <div class="text-warning">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="mb-0">"The online booking system saved me so much time. I was able to get an appointment with a specialist within 24 hours!"</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 mb-4" data-aos="fade-up" data-aos-delay="200">
+                <div class="card h-100 border-0 shadow-sm hover-effect">
+                    <div class="card-body p-4">
+                        <div class="d-flex align-items-center mb-4">
+                            <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Patient" class="rounded-circle me-3" width="60">
+                            <div>
+                                <h5 class="mb-0">Michael Chen</h5>
+                                <div class="text-warning">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star-half-alt"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="mb-0">"The virtual consultation was so convenient. The doctor was professional and thorough, even through video."</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 mb-4" data-aos="fade-up" data-aos-delay="300">
+                <div class="card h-100 border-0 shadow-sm hover-effect">
+                    <div class="card-body p-4">
+                        <div class="d-flex align-items-center mb-4">
+                            <img src="https://randomuser.me/api/portraits/women/65.jpg" alt="Patient" class="rounded-circle me-3" width="60">
+                            <div>
+                                <h5 class="mb-0">Emily Wilson</h5>
+                                <div class="text-warning">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="mb-0">"I've been using this platform for all my family's healthcare needs. It's reliable and easy to use."</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Stats Section -->
+<section class="py-5 bg-primary text-white" data-aos="fade-up">
+    <div class="container py-5">
+        <div class="row text-center">
+            <div class="col-md-3 col-6 mb-4 mb-md-0">
+                <div class="display-4 fw-bold mb-2" data-count="250">0</div>
+                <p class="mb-0">Expert Doctors</p>
+            </div>
+            <div class="col-md-3 col-6 mb-4 mb-md-0">
+                <div class="display-4 fw-bold mb-2" data-count="50000">0</div>
+                <p class="mb-0">Happy Patients</p>
+            </div>
+            <div class="col-md-3 col-6">
+                <div class="display-4 fw-bold mb-2" data-count="24">0</div>
+                <p class="mb-0">Hour Support</p>
+            </div>
+            <div class="col-md-3 col-6">
+                <div class="display-4 fw-bold mb-2" data-count="15">0</div>
+                <p class="mb-0">Specialties</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="py-5 bg-light" data-aos="fade-up">
+    <div class="container py-5">
+        <div class="row bg-primary rounded-3 p-5 align-items-center shadow">
+            <div class="col-lg-8">
+                <h2 class="text-white fw-bold mb-3">Ready to take control of your health?</h2>
+                <p class="lead text-white mb-4">Join thousands of patients who have simplified their healthcare journey with our platform.</p>
+            </div>
+            <div class="col-lg-4 text-lg-end">
+                {% if not session.get('email') %}
+                    <a href="{{ url_for('register') }}" class="btn btn-light btn-lg px-5 py-3 rounded-pill">
+                        <i class="fas fa-user-plus me-2"></i> Sign Up Free
+                    </a>
+                {% else %}
+                    <a href="{{ url_for('dashboard') }}" class="btn btn-light btn-lg px-5 py-3 rounded-pill">
+                        <i class="fas fa-tachometer-alt me-2"></i> Go to Dashboard
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Doctors Section -->
+<section class="py-5" data-aos="fade-up">
+    <div class="container py-5">
+        <div class="row justify-content-center mb-5">
+            <div class="col-lg-8 text-center">
+                <h2 class="display-5 fw-bold mb-3">Meet Our Doctors</h2>
+                <p class="lead text-muted">Experienced professionals dedicated to your health</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 col-lg-3 mb-4">
+                <div class="card h-100 border-0 shadow-sm hover-effect">
+                    <img src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" class="card-img-top" alt="Doctor">
+                    <div class="card-body text-center">
+                        <h5 class="card-title mb-1">Dr. Sarah Johnson</h5>
+                        <p class="text-muted mb-3">Cardiologist</p>
+                        <div class="d-flex justify-content-center gap-2">
+                            <a href="#" class="btn btn-sm btn-outline-primary rounded-pill">View Profile</a>
+                            <a href="#" class="btn btn-sm btn-primary rounded-pill">Book Now</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3 mb-4">
+                <div class="card h-100 border-0 shadow-sm hover-effect">
+                    <img src="https://images.unsplash.com/photo-1594824476967-48c8b964273f?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" class="card-img-top" alt="Doctor">
+                    <div class="card-body text-center">
+                        <h5 class="card-title mb-1">Dr. Michael Chen</h5>
+                        <p class="text-muted mb-3">Neurologist</p>
+                        <div class="d-flex justify-content-center gap-2">
+                            <a href="#" class="btn btn-sm btn-outline-primary rounded-pill">View Profile</a>
+                            <a href="#" class="btn btn-sm btn-primary rounded-pill">Book Now</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3 mb-4">
+                <div class="card h-100 border-0 shadow-sm hover-effect">
+                    <img src="https://images.unsplash.com/photo-1622253692010-333f2da6031d?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" class="card-img-top" alt="Doctor">
+                    <div class="card-body text-center">
+                        <h5 class="card-title mb-1">Dr. Emily Wilson</h5>
+                        <p class="text-muted mb-3">Pediatrician</p>
+                        <div class="d-flex justify-content-center gap-2">
+                            <a href="#" class="btn btn-sm btn-outline-primary rounded-pill">View Profile</a>
+                            <a href="#" class="btn btn-sm btn-primary rounded-pill">Book Now</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3 mb-4">
+                <div class="card h-100 border-0 shadow-sm hover-effect">
+                    <img src="https://images.unsplash.com/photo-1651008376811-b90baee60c1f?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" class="card-img-top" alt="Doctor">
+                    <div class="card-body text-center">
+                        <h5 class="card-title mb-1">Dr. Robert Davis</h5>
+                        <p class="text-muted mb-3">Orthopedic Surgeon</p>
+                        <div class="d-flex justify-content-center gap-2">
+                            <a href="#" class="btn btn-sm btn-outline-primary rounded-pill">View Profile</a>
+                            <a href="#" class="btn btn-sm btn-primary rounded-pill">Book Now</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="text-center mt-4">
+            <a href="#" class="btn btn-outline-primary">View All Doctors <i class="fas fa-arrow-right ms-2"></i></a>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<!-- AOS (Animate On Scroll) -->
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+    // Initialize AOS
+    AOS.init({
+        duration: 800,
+        easing: 'ease-in-out',
+        once: true
+    });
+
+    // Counter animation for stats
+    $(document).ready(function() {
+        $('[data-count]').each(function() {
+            $(this).prop('Counter', 0).animate({
+                Counter: $(this).data('count')
+            }, {
+                duration: 2000,
+                easing: 'swing',
+                step: function(now) {
+                    $(this).text(Math.ceil(now));
+                }
+            });
+        });
+
+        // Add hover effect to cards
+        $('.hover-effect').hover(
+            function() {
+                $(this).addClass('shadow-lg').css('transform', 'translateY(-10px)');
+            },
+            function() {
+                $(this).removeClass('shadow-lg').css('transform', 'translateY(0)');
+            }
+        );
+
+        // Smooth scrolling for anchor links
+        $('a[href^="#"]').on('click', function(event) {
+            event.preventDefault();
+            $('html, body').animate({
+                scrollTop: $($(this).attr('href')).offset().top - 70
+            }, 800);
+        });
+
+        // Parallax effect for hero section
+        $(window).scroll(function() {
+            const scroll = $(window).scrollTop();
+            $('.hero-section').css('background-position-y', scroll * 0.5 + 'px');
+        });
+    });
+</script>
+{% endblock %}
